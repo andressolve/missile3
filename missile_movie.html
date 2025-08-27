@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>How a Cruise Missile Works — Cinematic Explainer</title>
+<style>
+  :root{
+    --bg: #0b0e14;
+    --panel: #101521;
+    --text: #e8edf4;
+    --muted:#9aa6b2;
+    --accent:#61dafb;
+    --radius:18px;
+    --shadow: 0 10px 35px rgba(0,0,0,.35);
+    --availH: 70vh;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+    color:var(--text);
+    background: radial-gradient(1200px 800px at 70% -10%, #1a2233 0%, #0b0e14 60%) no-repeat var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    padding: clamp(10px, 2vw, 24px);
+  }
+  .deck{
+    width:min(1100px, 100%);
+    background: linear-gradient(180deg,#141a26 0%, #101521 100%);
+    border-radius: var(--radius);
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  header{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:14px 18px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    background: linear-gradient(180deg, rgba(255,255,255,.04), transparent);
+  }
+  header h1{ margin:0; font-size:clamp(18px,2.2vw,24px); letter-spacing:.2px }
+  header .meta{ color:var(--muted); font-size:.95rem }
+
+  .stage{
+    position:relative;
+    background:#0a0f18;
+    display:flex; align-items:center; justify-content:center;
+    padding:8px;
+    min-height: calc(var(--availH) + 16px);
+  }
+
+  .slides{ width:100% }
+
+  figure.slide{
+    margin:0; display:none;
+    text-align:center;
+    padding: 0 8px 0;
+  }
+  figure.slide.active{ display:block }
+
+  .media{
+    display:flex; align-items:center; justify-content:center;
+    width:100%;
+  }
+  .media img{
+    display:block;
+    max-width:100%;
+    height:auto;
+    max-height: var(--availH);
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .controls{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:12px 16px;
+    border-top:1px solid rgba(255,255,255,.08);
+    background: linear-gradient(0deg, rgba(255,255,255,.03), transparent);
+  }
+  .btn{
+    appearance:none; border:1px solid rgba(255,255,255,.15);
+    background:#0f1624; color:var(--text);
+    padding:9px 14px; border-radius:12px; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+    transition: background .2s ease, transform .08s ease, border-color .2s ease;
+  }
+  .btn:hover{ background:#141d30; border-color: rgba(255,255,255,.25) }
+  .btn:active{ transform: translateY(1px) }
+  .btn svg{ width:18px; height:18px }
+
+  .center{ display:flex; align-items:center; gap:14px; flex:1; justify-content:center; min-width:0 }
+  .dots{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center }
+  .dot{
+    width:10px; height:10px; border-radius:999px;
+    border:1px solid rgba(255,255,255,.35);
+    background:transparent; padding:0; cursor:pointer;
+  }
+  .dot[aria-current="true"]{ background:var(--accent); border-color:transparent }
+  .progress{ color:var(--muted); font-size:.95rem; white-space:nowrap }
+
+  .hint{ color:var(--muted); font-size:.9rem; text-align:center; padding: 8px 14px 14px }
+
+  @media (max-width:520px){
+    header{ flex-direction:column; align-items:flex-start }
+    .btn span{ display:none }
+  }
+</style>
+</head>
+<body>
+<main class="deck" aria-label="How a Cruise Missile Works — 6-slide explainer">
+  <header>
+    <h1>How a Cruise Missile Works</h1>
+    <div class="meta">Slide <strong id="count">1</strong> / <strong>6</strong></div>
+  </header>
+
+  <section class="stage" id="stage" role="region" aria-live="polite">
+    <div class="slides" id="slides">
+
+      <figure class="slide active"><div class="media"><img src="slide1.png" alt="Slide 1" /></div></figure>
+      <figure class="slide"><div class="media"><img src="slide2.png" alt="Slide 2" /></div></figure>
+      <figure class="slide"><div class="media"><img src="slide3.png" alt="Slide 3" /></div></figure>
+      <figure class="slide"><div class="media"><img src="slide4.png" alt="Slide 4" /></div></figure>
+      <figure class="slide"><div class="media"><img src="slide5.png" alt="Slide 5" /></div></figure>
+      <figure class="slide"><div class="media"><img src="slide6.png" alt="Slide 6" /></div></figure>
+
+    </div>
+  </section>
+
+  <nav class="controls" aria-label="Slide controls">
+    <button class="btn" id="prev" aria-label="Previous slide">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      <span>Prev</span>
+    </button>
+
+    <div class="center">
+      <div class="dots" id="dots" role="tablist" aria-label="Choose slide"></div>
+      <div class="progress" id="progress">Use ← / → keys</div>
+    </div>
+
+    <button class="btn" id="next" aria-label="Next slide">
+      <span>Next</span>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="m8.59 16.59 1.41 1.41 6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+    </button>
+  </nav>
+
+  <div class="hint">Tip: Click dots, press ← / →, swipe on touch devices, or use Home/End to jump.</div>
+</main>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsWrap = document.getElementById('dots');
+  const countEl = document.getElementById('count');
+  const stage = document.getElementById('stage');
+  const header = document.querySelector('header');
+  const controls = document.querySelector('.controls');
+  const hint = document.querySelector('.hint');
+  let idx = 0;
+
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'dot';
+    b.type = 'button';
+    b.role = 'tab';
+    b.ariaLabel = `Go to slide ${i+1}`;
+    b.addEventListener('click', () => show(i));
+    dotsWrap.appendChild(b);
+  });
+
+  function updateDots(){
+    dotsWrap.querySelectorAll('.dot').forEach((d, i) =>
+      d.setAttribute('aria-current', i===idx ? 'true' : 'false'));
+  }
+
+  function show(n){
+    idx = (n + slides.length) % slides.length;
+    slides.forEach((s, i) => s.classList.toggle('active', i===idx));
+    countEl.textContent = String(idx+1);
+    updateDots();
+    stage.scrollIntoView({block:'nearest', behavior:'smooth'});
+  }
+
+  document.getElementById('prev').onclick = () => show(idx-1);
+  document.getElementById('next').onclick = () => show(idx+1);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') show(idx-1);
+    if (e.key === 'ArrowRight') show(idx+1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length-1);
+    const num = Number(e.key);
+    if (!Number.isNaN(num) && num>=1 && num<=slides.length) show(num-1);
+  });
+
+  let startX=null, startY=null;
+  stage.addEventListener('touchstart', (e)=>{
+    const t=e.changedTouches[0]; startX=t.clientX; startY=t.clientY;
+  }, {passive:true});
+  stage.addEventListener('touchend', (e)=>{
+    if(startX===null) return;
+    const t=e.changedTouches[0];
+    const dx=t.clientX-startX, dy=t.clientY-startY;
+    if(Math.abs(dx)>40 && Math.abs(dx)>Math.abs(dy)){
+      if(dx<0) show(idx+1); else show(idx-1);
+    }
+    startX=startY=null;
+  }, {passive:true});
+
+  function setAvailHeight(){
+    const hH = header.offsetHeight;
+    const cH = controls.offsetHeight;
+    const hintH = hint.offsetHeight;
+    const pad = 40;
+    const avail = Math.max(260, window.innerHeight - hH - cH - hintH - pad);
+    document.documentElement.style.setProperty('--availH', `${avail}px`);
+  }
+  setAvailHeight();
+  window.addEventListener('resize', setAvailHeight);
+
+  show(0);
+})();
+</script>
+</body>
+</html>
